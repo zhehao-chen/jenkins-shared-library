@@ -1,5 +1,4 @@
-def call(Map config = [:]) {
-    stage('Container Build') {
-        sh 'echo "Building container image..."'
-    }
+def call(String imageName, String imageTag, String envTag) {
+    echo "=== Container Build Stage ==="
+    sh "docker build -t ${imageName}:${imageTag} -t ${imageName}:${envTag} ."
 }
