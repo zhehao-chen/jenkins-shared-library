@@ -4,8 +4,11 @@ def call(String environment, String imageName, String imageTag) {
     def namespace = environment  // dev, staging, prod
 
     sh """
-        # Replace IMAGE_TAG_PLACEHOLDER with the actual image tag
-        sed -i.bak 's|IMAGE_TAG_PLACEHOLDER|${imageTag}|g' k8s/deployment.yaml
+        # Replace IMAGE_TAG_PLACEHOLDER and namespace in deployment.yaml
+        sed -i.bak \
+            -e 's|IMAGE_TAG_PLACEHOLDER|${imageTag}|g' \
+            -e 's|namespace: dev|namespace: ${namespace}|g' \
+            k8s/deployment.yaml
 
         # Apply all manifests in the k8s directory
         kubectl apply -f k8s/ --namespace=${namespace}
